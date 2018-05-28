@@ -1,0 +1,115 @@
+.form {
+    &__group:not(:last-child) { //Doing the not last child trick because we want to give space at the bottom
+        margin-bottom: 2rem;       
+    }
+
+    &__input {
+        font-size: 1.5rem;      //Because it's smaller
+        font-family: inherit;   //Because input boxes doesn't follow the whole font family, you need to set inherit
+        color: inherit;         //To inherit the grey color when typing
+        padding: 1.5rem 2rem;   //Top and bottom: 1.5 and left and right: 2 because it looks better
+        border-radius: .2rem;   //To give rounded corners
+        border: none;           //for flat box - no border bezel
+        background-color: rgba($color-white, .5);
+        border-bottom: 3px solid transparent;           //This will prevent the boxes from adjusting, it just 
+                                                        //hides it with transparent 
+        display: block;         //This is to make the whole box for the whole left side
+        width: 90%;             //90% because 100% is too much
+        transition: all .3s;     //Animation when orange changes to green
+
+        @include respond(tab-port) {
+            width: 100%;
+        }
+
+        //To replace the blue border when the box is selected
+        &:focus {
+            outline: none;                                  //This will remove the blue outline
+            box-shadow: 0 1rem 2rem rgba($color-black, .1); //This will give shadow to the box once selected
+            border-bottom: 3px solid $color-primary;      //This will give a line at the bottom when the box is selected
+        }
+
+        //This is have an orange line if the user inputs the wrong info
+        &:focus:invalid {
+            border-bottom: 3px solid $color-secondary-dark;
+        }
+
+        //To make the placeholder grey
+        &::-webkit-input-placeholder { 
+            color: $color-grey-dark-2;
+        }
+    }
+
+    &__label {
+        font-size: 1.2rem;  //Pretty small font size
+        font-weight: 700;   //Bold
+        margin-left: 2rem;  //To make it aligned
+        margin-top: .7rem;  
+        display: block;     //For me to be able to use the box property elements
+        transition: all .3s;
+    }
+
+    //Now this part is to create the effect of the placeholder sliding down outside when input is shown
+    &__input:placeholder-shown ~ &__label {    //this reads, when placeholder is show, then do the css on the label (+ or ~)
+        opacity: 0;                     //We use visibility too because even if the opacity is 0, it's still there
+        visibility: hidden;             //We use the opacity as well because we can't animate just the visibility
+        transform: translateY(-4rem);   //For the animation for the label to slide down
+    }
+
+    &__radio-input {
+        display:none;
+    }
+
+    //To style the 2 button groups
+    &__radio-group {
+        width: 47%;                 //Width and inline block is for them to display side by side
+        display: inline-block;      //Each group is not taking the entire space and it is side by side
+        
+        @include respond(tab-port) {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+    }
+
+    //This is to style the label
+    &__radio-label {
+        font-size: $default-font-size;      //To set the font to default (1.6rem)
+        cursor: pointer;                    //To look like it's clickable when hovering
+        position: relative;                 //This is so the radio-button can follow it's position
+        padding-left: 4.5rem;               //This is to give the radio-button space 
+    }
+
+    //This is to style the button
+    &__radio-button {
+        //This is styling the outside circle
+        width: 3rem;    //Every object needs a height and width;
+        height: 3rem;
+        border: 5px solid $color-primary;   //This is for the actual color and line of the circle
+        border-radius: 50%;                 //This is to make it a circle
+        display: inline-block;              //This is for the circle to take form but next to the label
+        position: absolute;                 //Because without this, it won't be centered next to the label - the parent is                                              radio-label
+        top: -.4rem;                             //To push it to the left
+        left: 0;
+        
+        //This pseudo-class is to make the circle shape inside the button
+        &::after {                         
+            content: "";                        //All pseudoclasses needs to have content even if it's blank;
+            display: block;                     //Same from up top
+            width: 1.3rem;                        //All of object needs height and width
+            height: 1.3rem;
+            border-radius: 50%;                 //to make it a circle;
+            background-color: $color-primary;   //To make it color green
+            position: absolute;                 //To make the circle inside
+            top: 50%;                           //^^
+            left: 50%;                          //^^^
+            transform: translate(-50%, -50%);   //^^^^
+
+            opacity: 0;                         //Initial value is 0 because we want to hide when it's not yet clicked
+        }  
+    }
+
+    //This will match the radio-button::after to turn on and off based if the input is checked or not
+    //When radio input is checked, do this on the radio-button but radio button is not the direct child so we use the sibling (label) selector
+    &__radio-input:checked ~ &__radio-label &__radio-button::after { 
+        opacity: 1;
+    }
+}

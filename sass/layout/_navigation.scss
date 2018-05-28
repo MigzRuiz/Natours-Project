@@ -1,0 +1,187 @@
+.navigation {
+    &__checkbox {
+        display: none;  //To hide the checkbox
+    }
+    &__button {
+        //2) Next is to button on top of the green circle
+        background-color: $color-white;
+        height: 7rem;       //It has a higher size than the green circle because it is on top
+        width: 7rem;
+        border-radius: 50%; //To make it a circle 
+
+        position: fixed;
+        top: 6rem;
+        right: 6rem;
+
+        z-index: 2000;  //To always set it on top of the green circle
+
+        box-shadow: 0 1rem 3rem rgba($color-black,.1); //To give the button a nice shadow
+
+        //To center the hamburger icon
+        text-align: center;
+
+        cursor: pointer;
+
+        @include respond(tab-port){
+           top: 4rem;
+           right: 4rem;
+        }
+        @include respond(phone){
+            top: 3rem;
+            right: 3rem;
+        }
+
+    }
+    &__background {
+        //1) First we are gonna do the fixed circle
+        height: 6rem;       //Every object needs a height and width
+        width: 6rem;
+        border-radius: 50%; //To make it a circle;
+        background-image: radial-gradient($color-primary-light, $color-primary-dark);   //To give it color - radial way
+
+        position: fixed;    //To set it's position to set where it is
+        top: 6.5rem;          //This sets it's position
+        right: 6.5rem;
+
+        z-index: 1000;       //To always set it on top
+
+        //We only want the animation to be in the transform or the scaling
+        transition: transform .8s cubic-bezier(.86,0,.07,.1); //Cubic-bezier is for the speed/easing of the animation
+
+        @include respond(tab-port){
+            top: 4.5rem;
+            right: 4.5rem;
+        }
+        @include respond(phone){
+            top: 3.5rem;
+            right: 3.5rem;
+        }
+
+    }
+    &__nav {
+        //3) This is creating the whole page navigation
+        height: 100vh;      //To the whole screen
+        width: 0;
+        position: fixed;    //to set it's default position
+        top:0;              //it starts at the top right when it fills the screen
+        left:0;             //So it pulls it self to the left when animated
+
+        z-index: 1500;
+        opacity: 0;         //Hide the whole background
+
+        //Animation for the nav
+        transition: all .8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    &__list {
+        //4) We are gonna center the whole list in the nav
+        //The next 4 lines will center it - create a MIXIN later
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width:100%;
+
+        //Styling - get rid of the bullets;
+        list-style: none;       //Get rid of the bullets
+        text-align: center;     //Center all text
+    }
+    &__item {
+        //Gives space between the elements
+        margin: 1rem;
+
+    }
+    &__link {
+        //5)Styling the links
+        &:link,
+        &:visited {
+            display: inline-block;
+            font-size: 3rem;                //Gives it a nice big font
+            font-weight: 300;               //It makes it thin
+            padding: 1rem 2rem;             //more on the left and right       
+            color: $color-white;            //duh
+            text-decoration: none;          //Removed underline
+            text-transform: uppercase;      //makes them uppercase
+
+            //To give it a gradient
+            background-image: linear-gradient(120deg, transparent 0%, transparent 50%, $color-white 50%);
+            background-size: 220%;
+            transition: all .4s;
+
+            //span
+            span {
+                margin-right: 1.5rem;
+                display: inline-block;
+            }
+
+        }
+
+        &:hover,
+        &:active {
+            background-position: 100%;
+            color: $color-primary;
+            transform: translateX(1rem);
+        }
+    }
+
+    //FUNCTIONALITY
+    //Checkbox hack
+    //To show the green background
+    &__checkbox:checked ~ &__background {
+        transform: scale(100);
+    }
+    //To show the navigation
+    &__checkbox:checked ~ &__nav {
+        opacity: 1;
+        width: 100%;
+    }
+
+    //ICON
+    &__icon {
+        position: relative;
+        margin-top: 3.5rem;
+
+        //The styles that all the icon and its before and after pseudoclass have
+        &,
+        &::before,
+        &::after {
+            width: 3rem;                            //Constant height and width
+            height: 2px;                            
+            background-color: $color-grey-dark-3;   
+            display: inline-block;
+        }
+
+        //Need to declare content for the pseudoclass to appear
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            transition: all .2s;
+        }
+
+        &::before {top: -.8rem;}
+        &::after {top: .8rem;}
+    }
+
+    //These two are for when you hover in the button it will move or space out
+    &__button:hover &__icon::before { top: -1rem; }
+    &__button:hover &__icon::after { top: 1rem;}
+
+    //MAKING THE X animation
+    //this will hide the one in the middle
+    &__checkbox:checked ~ &__button &__icon {
+        background-color: transparent;
+    }
+
+    //These 2 would rotate the dashes and put them in the middle
+    &__checkbox:checked ~ &__button &__icon::before {
+        top: 0;
+        transform: rotate(135deg); //it could be 45 but added twist
+    }
+    &__checkbox:checked ~ &__button &__icon::after {
+        top: 0;
+        transform: rotate(-135deg);
+    }
+
+}

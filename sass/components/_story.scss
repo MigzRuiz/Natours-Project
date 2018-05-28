@@ -1,0 +1,85 @@
+.story {
+    width: 75%;
+    margin: 0 auto;
+    box-shadow: 0 3rem 6rem rgba($color-black, .1);
+    background-color: rgba($color-white,.6);
+    border-radius: .3rem;
+    padding: 6rem;
+    padding-left: 9rem; //to balance the transform: translate
+    font-size: $default-font-size;
+
+    transform: skewX(-12deg);
+
+    @include respond(tab-port) {
+        width: 100%;
+        padding: 4rem;
+        padding-left: 7rem;
+    }
+
+    @include respond(phone) {
+        transform: skewX(0);
+    }
+
+    &__shape {
+        width: 15rem;
+        height: 15rem;
+        left: 0;
+        float: left;
+        background-color: indianred;
+
+        //this is for the text to float and wrap around in a circle fashion
+        -webkit-shape-outside: circle(50% at 50% 50%);
+        shape-outside: circle(50% at 50% 50%);
+        -webkit-clip-path: circle(50% at 50% 50%);
+        clip-path: circle(50% at 50% 50%);
+        transform: translateX(-3rem) skewX(12deg);
+        position: relative;
+
+        @include respond(phone) {
+            transform: translateX(-3rem) skewX(0deg);
+        }
+    }
+
+
+    &__img {
+        height: 100%;
+        transform: translateX(-4rem) scale(1.4);
+        backface-visibility: hidden;
+        transition: all .5s;
+    }
+
+    &__text{
+        transform: skewX(12deg);
+
+        @include respond(phone) {
+            transform: skewX(0deg);
+        }
+    }
+
+    &__caption {
+        color: $color-white;
+        font-size: 1.7rem;
+        text-align: center;
+        text-transform: uppercase;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        //animation
+        transform: translate(-50%, 20%); //20% so it starts lower;
+        opacity: 0;
+        transition: all .5s;
+        backface-visibility: hidden;
+    }
+
+    &:hover &__caption {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    &:hover &__img {
+        transform: translateX(-4rem) scale(1);
+        filter: blur(3px) brightness(80%);
+    }
+}
+

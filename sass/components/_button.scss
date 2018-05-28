@@ -1,0 +1,100 @@
+.btn {
+    &, &:link, &:visited {
+        font-size: $default-font-size;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem 4rem;
+        display: inline-block;
+        border-radius: 10rem;
+        backface-visibility: hidden;
+        position: relative;
+    
+        transition: all .2s;
+
+        //Change for <button> element
+        //Added the & on top for this to apply to button elements as well.
+        border: none;
+        cursor: pointer;
+    }
+    &:hover { 
+        transform: translateY(-.3rem);
+        box-shadow: 0 1rem 2rem rgba($color-black,.2);
+
+        &::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
+    }
+    
+    &:active, 
+    &:focus { //Focus is here to hide the blue border box
+        outline: none;  //To hide the blue border
+        transform: translateY(.1rem);
+        /*lesser values to get the effect that when click it goes in closer the surface*/
+        box-shadow: 0 .5rem 1rem rgba($color-black,.2);
+    }
+
+    &--white {
+        background-color: $color-white;
+        color: $color-grey-dark;
+
+        &::after {
+            background-color: $color-white;
+        }
+    }
+
+    &--green {
+        background-color: $color-primary;
+        color: $color-white;
+
+        &::after {
+            background-color: $color-primary;
+        }
+    }
+
+    &::after {
+        content: "";
+        display: inline-block;
+        height: 100%; /*These values are 100% because the ::after pseudo-class treats the main element as the parent and relies on it's dimensions*/
+        width: 100%;
+        border-radius: 10rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        /*Animation of the actual growing is in the initial state*/
+        transition: all .4s;
+    }
+
+    &--animated {
+        animation: moveInBottom .5s ease-out .75s;
+        animation-fill-mode: backwards;
+    }
+    
+}
+
+.btn-text {
+    &:link, &:visited {
+        color: $color-primary;
+        display: inline-block;
+        text-decoration: none;
+        border-bottom: 1px solid $color-primary;
+        padding: .3rem;
+        font-size: $default-font-size;
+
+        transition: all .2s;
+    }
+
+    &:hover {
+        background-color: $color-primary;
+        color: $color-white;
+
+        box-shadow: 0 1rem 2rem rgba($color-black, .15);
+        transform: translateY(-.2rem);
+    }
+
+    &:active {
+        box-shadow: 0 .5rem 1rem rgba($color-black, .15);
+        transform: translateY(0);
+    }
+}
